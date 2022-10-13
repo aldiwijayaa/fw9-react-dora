@@ -1,63 +1,67 @@
-import React from "react"
-import Imgdb from "../assets/img/phone-double.png"
-import { Row, Col } from "react-bootstrap"
-import {Link} from "react-router-dom"
+import React, { useState } from 'react';
+import '../asset/css/create-pin.css';
+import Intro from '../component/Intro';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPin } from '../redux/asyncActions/user';
+import { useNavigate } from 'react-router-dom';
 
-function CreatePin() {
+export const CreatePin = () => {
+  const [form, setForm] = useState({ first: '', sec: '', third: '', fourth: '', fifth: '', sixth: '' });
+
+  const email = useSelector((state) => state.user.email);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleChangeText = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const pin = { pin: Object.values(form).join('') };
+  const formPin = {
+    pin: pin.pin,
+    email,
+  };
+
+  const onCreatePin = () => {
+    dispatch(createPin({ formPin, cb: () => navigate('/dashboard', { replace: true }) }));
+  };
+
   return (
-    <>
-      <Row className="min-vh-100 mw-100" >  
-        <Col className="d-flex flex-column gap-5 background-auth" >
-          <div className="d-flex flex-column align-items-center">
-              <div>
-                  <div className="d-flex justify-content-start">
-                    <span className="fs-2 fw-bold">Zwallet</span>
-                  </div>
-                  <div>
-                    <img src={Imgdb} alt="phone-db" />
-                  </div>
-              </div>
+    <section className="row">
+      <Intro />
 
-              <div className ="d-flex flex-column gap-5 text-content">
-                <span className ="fs-3 fw-bold">App that Covering Banking Needs.</span>
-                <p className ="fw-normal">Zwallet is an application that focussing in banking needs for all users <br/> in the world. Always updated and always following world trends. <br/> 5000+ users registered in Zwallet everyday with worldwide <br/> users coverage. </p>
-              </div>
-            </div>
-        </Col>
-        <Col className="px-5 auth-from-wraper d-flex flex-column gap-5">
-            <h3 className="text-start fs-3 fw-bold">Secure Your Account, Your Wallet, <br/> and Your Data With 6 Digits PIN <br/> That You Created Yourself.</h3>
-            <p className="text-start fw-normal text-muted">Create 6 digits pin to secure all your money and your data in <br/> Zwallet app. Keep it secret and don't tell anyone about your <br/> Zwallet account password and the PIN.</p>
+      <div className="col-md-5 fw-form d-flex flex-column fw-create-pin">
+        <h3 className="fw-motto fw-margin">Start Accessing Banking Needs With All Devices and All Platforms With 30.000+ Users</h3>
+        <p className="fw-accessibility mt-4">Transfering money is eassier than ever, you can access Zwallet wherever you are. Desktop, laptop, mobile phone? we cover all of that for you!</p>
 
-            <div className="d-flex justify-content-center flex-row gap-5 pin-wrap">
-              <div className="d-flex align-items-center pin-border">
-                <input type="number" className="pin-num" maxlength="1" min="0" max="9"/>
-              </div>
-              <div className="d-flex align-items-center pin-border">
-                <input type="number" className="pin-num" maxlength="1" min="0" max="9"/>
-              </div>
-              <div className="d-flex align-items-center pin-border">
-                <input type="number" className="pin-num" maxlength="1" min="0" max="9"/>
-              </div>
-              <div className="d-flex align-items-center pin-border">
-                <input type="number" className="pin-num" maxlength="1" min="0" max="9"/>
-              </div>
-              <div className="d-flex align-items-center pin-border">
-                <input type="number" className="pin-num" maxlength="1" min="0" max="9"/>
-              </div>
-              <div className="d-flex align-items-center pin-border">
-                <input type="number" className="pin-num" maxlength="1" min="0" max="9"/>
-              </div>
-            </div>
+        <div className="d-flex justify-content-center fw9-input my-5">
+          <div className="square">
+            <input type="text" className="rounded-3 text-center fs-1" maxLength="1" name="first" onChange={handleChangeText} />
+          </div>
+          <div className="square">
+            <input type="text" className="rounded-3 text-center fs-1" maxLength="1" name="sec" onChange={handleChangeText} />
+          </div>
+          <div className="square">
+            <input type="text" className="rounded-3 text-center fs-1" maxLength="1" name="third" onChange={handleChangeText} />
+          </div>
+          <div className="square">
+            <input type="text" className="rounded-3 text-center fs-1" maxLength="1" name="fourth" onChange={handleChangeText} />
+          </div>
+          <div className="square">
+            <input type="text" className="rounded-3 text-center fs-1" maxLength="1" name="fifth" onChange={handleChangeText} />
+          </div>
+          <div className="square">
+            <input type="text" className="rounded-3 text-center fs-1" maxLength="1" name="sixth" onChange={handleChangeText} />
+          </div>
+        </div>
+        <div className="d-grid fw-button create rounded">
+          <button onClick={onCreatePin} className="btn text-light fw-bold" type="button">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
 
-            <Link to="/createPinSuccess" className="text-decoration-none">
-              <div className="d-grid mt-5">
-                <button className="btn btn-primary btn-lg fw-bold button-login">Confirm</button>
-              </div>
-            </Link>
-        </Col>
-        </Row>
-    </>
-  )
-}
-
-export default CreatePin
+export default CreatePin;
